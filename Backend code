@@ -1,0 +1,71 @@
+//Backend code
+
+Create a new Node.js project for the backend:
+mkdir task-tracker-backend
+cd task-tracker-backend
+npm init -y
+Install Express.js and Mongoose:
+npm install express mongoose
+Set up a MongoDB database and connect to it using Mongoose:
+js
+const express = require('express');
+const mongoose = require('mongoose');
+
+const app = express();
+
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/task-tracker', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
+
+// Define Task schema and model
+const taskSchema = new mongoose.Schema({
+  name: String,
+  description: String,
+  completed: Boolean,
+});
+const Task = mongoose.model('Task', taskSchema);
+
+// Add API routes here
+
+app.listen(5000, () => {
+  console.log('Server started on port 5000');
+});
+Create RESTful API endpoints for CRUD operations for tasks:
+// Get all tasks
+app.get('/tasks', async (req, res) => {
+  const tasks = await Task.find();
+  res.json(tasks);
+});
+
+// Get a single task
+app.get('/tasks/:id', async (req, res) => {
+  const task = await Task.findById(req.params.id);
+  res.json(task);
+});
+
+// Add a new task
+app.post('/tasks', async (req, res) => {
+  const task = new Task(req.body);
+  await task.save();
+  res.json(task);
+});
+
+// Update a task
+app.put('/tasks/:id', async (req, res) => {
+  const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+  });
+  res.json(task);
+});
+
+// Delete a task
+app.delete('/tasks/:id', async (req, res) => {
+  await Task.findByIdAndDelete(req.params.id);
+  res.json({ message: 'Task deleted' });
+});
+Implement API routes to handle requests from the frontend and interact with the MongoDB database.
+
+Basic Imports
+Import React, ReactDOM, useState hook from React, MUI components from @mui/material, Express.js for the backend, and Mongoose for MongoDB integration.
