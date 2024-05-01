@@ -1,0 +1,150 @@
+//Frontend
+
+Create a new React project using Create React App:
+
+npx create-react-app task-tracker-frontend
+Install Material-UI in your project:
+
+npm install @mui/material @emotion/react @emotion/styled
+Create a functional component named TaskTrackerApp and use the useState hook to manage an array of tasks:
+jsx
+
+import React, { useState } from 'react';
+import TaskForm from './TaskForm';
+import TaskList from './TaskList';
+
+function TaskTrackerApp() {
+  const [tasks, setTasks] = useState([]);
+
+  // Add functions for adding, deleting, and updating tasks here
+
+  return (
+    <div>
+      <TaskForm />
+      <TaskList tasks={tasks} />
+    </div>
+  );
+}
+
+export default TaskTrackerApp;
+Create a TaskForm component with fields for task name and task description using MUI TextField components:
+jsx
+
+import React, { useState } from 'react';
+import { TextField, Button } from '@mui/material';
+
+function TaskForm() {
+  const [taskName, setTaskName] = useState('');
+  const [taskDescription, setTaskDescription] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Add logic for adding a new task here
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <TextField
+        label="Task Name"
+        value={taskName}
+        onChange={(e) => setTaskName(e.target.value)}
+      />
+      <TextField
+        label="Task Description"
+        value={taskDescription}
+        onChange={(e) => setTaskDescription(e.target.value)}
+      />
+      <Button type="submit">Add Task</Button>
+    </form>
+  );
+}
+
+export default TaskForm;
+Create a TaskList component that displays the list of tasks using MUI List and ListItem components:
+jsx
+
+import React from 'react';
+import { List, ListItem, ListItemText, IconButton } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+
+function TaskList({ tasks, onDelete }) {
+  return (
+    <List>
+      {tasks.map((task) => (
+        <ListItem key={task._id}>
+          <ListItemText primary={task.name} secondary={task.description} />
+          <IconButton onClick={() => onDelete(task._id)}>
+            <DeleteIcon />
+          </IconButton>
+        </ListItem>
+      ))}
+    </List>
+  );
+}
+
+export default TaskList;
+Implement the delete functionality to remove a task from the tasks array when the delete button is clicked:
+jsx
+
+function TaskTrackerApp() {
+  const [tasks, setTasks] = useState([]);
+
+  const handleDelete = (_id) => {
+    setTasks(tasks.filter((task) => task._id !== _id));
+  };
+
+  // Add logic for adding a new task here
+
+  return (
+    <div>
+      <TaskForm onAdd={(task) => setTasks([...tasks, task])} />
+      <TaskList tasks={tasks} onDelete={handleDelete} />
+    </div>
+  );
+}
+Use MUI Grid for responsive layout, with a sidebar for navigation and a main content area for the task list:
+jsx
+
+import { Grid, AppBar, Toolbar, Typography } from '@mui/material';
+
+function TaskTrackerApp() {
+  // Add state and functions here
+
+  return (
+    <div>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6">Task Tracker</Typography>
+        </Toolbar>
+      </AppBar>
+      <Grid container spacing={2}>
+        <Grid item xs={2}>
+          {/* Add navigation sidebar here */}
+        </Grid>
+       <Grid item xs={10}>
+          <TaskForm onAdd={(task) => setTasks([...tasks, task])} />
+          <TaskList tasks={tasks} onDelete={handleDelete} />
+        </Grid>
+      </Grid>
+    </div>
+  );
+}
+Use MUI AppBar for the header with a title and any additional actions:
+jsx
+
+function TaskTrackerApp() {
+  // Add state and functions here
+
+  return (
+    <div>
+      <AppBar position="static">
+        <Toolbar>
+          <Typography variant="h6">Task Tracker</Typography>
+          <Button color="inherit">Settings</Button>
+        </Toolbar>
+      </AppBar>
+      {/* Add rest of the app here */}
+    </div>
+  );
+}
+Use CSS to style the application as needed, focusing on MUI components for layout and structure.
